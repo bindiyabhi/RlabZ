@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>RLabZ ERP - Projects Module Wireframe</title>
+<style>
+    :root {
+        --bg: #f5f7fb;
+        --panel: #ffffff;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --line: #d1d5db;
+        --dark: #111827;
+        --soft: #eef2ff;
+        --chip: #f3f4f6;
+        --light: #fafafa;
+    }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+    }
+    .app { display: flex; min-height: 100vh; }
+    .sidebar {
+        width: 260px;
+        background: var(--dark);
+        color: white;
+        padding: 24px 18px;
+        position: fixed;
+        top: 0; bottom: 0; left: 0;
+        overflow-y: auto;
+    }
+    .brand { font-size: 24px; font-weight: 700; margin-bottom: 6px; }
+    .subtitle {
+        font-size: 12px;
+        color: #cbd5e1;
+        margin-bottom: 28px;
+        line-height: 1.4;
+    }
+    .nav a {
+        display: block;
+        padding: 11px 12px;
+        color: #e5e7eb;
+        text-decoration: none;
+        border-radius: 8px;
+        margin-bottom: 6px;
+        font-size: 14px;
+    }
+    .nav a.active, .nav a:hover { background: #374151; }
+    .content {
+        margin-left: 260px;
+        width: calc(100% - 260px);
+        padding: 28px;
+    }
+    .topbar {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 20px 24px;
+        margin-bottom: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    h1 { margin: 0; font-size: 26px; }
+    h2 { font-size: 20px; margin: 0 0 16px; }
+    h3 { margin: 0 0 12px; font-size: 16px; }
+    .screen {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 30px;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+    }
+    .screen-label {
+        display: inline-block;
+        font-size: 12px;
+        background: var(--soft);
+        padding: 5px 10px;
+        border-radius: 999px;
+        margin-bottom: 14px;
+        color: #3730a3;
+        font-weight: 600;
+    }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn {
+        border: 1px solid var(--line);
+        background: white;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        cursor: default;
+    }
+    .btn.primary { background: var(--dark); color: white; border-color: var(--dark); }
+    .btn.soft { background: var(--soft); border-color: #c7d2fe; }
+    .filters {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 12px;
+        margin: 18px 0;
+    }
+    .field {
+        border: 1px solid var(--line);
+        background: var(--light);
+        border-radius: 8px;
+        padding: 11px 12px;
+        font-size: 13px;
+        color: var(--muted);
+        min-height: 40px;
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .form-grid.three { grid-template-columns: repeat(3, 1fr); }
+    .form-grid.four { grid-template-columns: repeat(4, 1fr); }
+    .form-section {
+        border: 1px dashed var(--line);
+        border-radius: 12px;
+        padding: 18px;
+        margin-top: 18px;
+        background: #fcfcfd;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        margin-top: 14px;
+    }
+    th, td {
+        padding: 12px 10px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        font-size: 13px;
+        vertical-align: top;
+    }
+    th { background: #f9fafb; color: #374151; font-weight: 700; }
+    tr:last-child td { border-bottom: none; }
+    .chip {
+        display: inline-block;
+        background: var(--chip);
+        border: 1px solid var(--line);
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        margin-right: 4px;
+        margin-bottom: 4px;
+    }
+    .status {
+        font-weight: 700;
+        border-radius: 999px;
+        padding: 4px 10px;
+        display: inline-block;
+        background: #f3f4f6;
+    }
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 14px;
+        margin-top: 18px;
+    }
+    .card {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--light);
+        padding: 16px;
+    }
+    .card .num { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
+    .card .label { color: var(--muted); font-size: 13px; }
+    .note {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.5;
+        margin-top: 12px;
+    }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .project-header {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr;
+        gap: 18px;
+        align-items: stretch;
+    }
+    .status-box {
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px;
+        background: var(--light);
+    }
+    .timeline {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
+        margin-top: 18px;
+    }
+    .step {
+        border: 1px solid var(--line);
+        background: var(--light);
+        padding: 12px;
+        border-radius: 12px;
+        font-size: 13px;
+        min-height: 70px;
+    }
+    .step strong { display: block; margin-bottom: 6px; }
+    .footer-note {
+        font-size: 12px;
+        color: var(--muted);
+        text-align: center;
+        padding: 20px;
+    }
+</style>
+</head>
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="brand">RLabZ ERP</div>
+        <div class="subtitle">Projects Module<br>Software Development Division</div>
+        <nav class="nav">
+            <a class="active" href="#dashboard">Project Dashboard</a>
+            <a href="#enquiry">Project Enquiry</a>
+            <a href="#initiation">Initiation & Proposal</a>
+            <a href="#costing">Costing</a>
+            <a href="#allocation">Faculty & Student Allocation</a>
+            <a href="#milestones">Tasks & Milestones</a>
+            <a href="#github">GitHub & Documentation</a>
+            <a href="#finance">Finance Tracking</a>
+            <a href="#closure">Closure & Handover</a>
+        </nav>
+    </aside>
+
+    <main class="content">
+        <div class="topbar">
+            <div>
+                <h1>Projects Module</h1>
+                <div class="note">Wireframe for managing RLabZ project enquiries, proposals, costing, teams, GitHub, finance, and closure.</div>
+            </div>
+            <div class="actions">
+                <div class="btn">Export Report</div>
+                <div class="btn primary">+ New Project</div>
+            </div>
+        </div>
+
+        <section class="screen" id="dashboard">
+            <span class="screen-label">Screen 01</span>
+            <h2>Project Dashboard</h2>
+            <div class="actions">
+                <div class="btn primary">+ Add Project Enquiry</div>
+                <div class="btn">Generate Project Report</div>
+                <div class="btn">Pending Approvals</div>
+            </div>
+
+            <div class="filters">
+                <div class="field">Search by project / client / faculty / student</div>
+                <div class="field">Project Type: All ▼</div>
+                <div class="field">Status: All ▼</div>
+                <div class="field">Faculty: All ▼</div>
+            </div>
+
+            <div class="cards">
+                <div class="card"><div class="num">08</div><div class="label">Active Projects</div></div>
+                <div class="card"><div class="num">04</div><div class="label">Proposal Stage</div></div>
+                <div class="card"><div class="num">03</div><div class="label">Awaiting Payment</div></div>
+                <div class="card"><div class="num">02</div><div class="label">Maintenance</div></div>
+                <div class="card"><div class="num">01</div><div class="label">Closure Pending</div></div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Source</th>
+                        <th>Faculty</th>
+                        <th>Students</th>
+                        <th>Status</th>
+                        <th>Finance</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Attendance Dashboard</td>
+                        <td>Institution</td>
+                        <td>Dr. X</td>
+                        <td>Anu, Rahul</td>
+                        <td><span class="status">Development</span></td>
+                        <td>₹45,000 / ₹80,000 received</td>
+                        <td>View</td>
+                    </tr>
+                    <tr>
+                        <td>Clinic Appointment App</td>
+                        <td>External Agency</td>
+                        <td>Dr. Y</td>
+                        <td>Meera, John</td>
+                        <td><span class="status">Proposal</span></td>
+                        <td>Estimate pending</td>
+                        <td>View</td>
+                    </tr>
+                    <tr>
+                        <td>Research Data Portal</td>
+                        <td>Faculty Project</td>
+                        <td>Dr. Z</td>
+                        <td>To be assigned</td>
+                        <td><span class="status">Review</span></td>
+                        <td>Not started</td>
+                        <td>View</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="screen" id="enquiry">
+            <span class="screen-label">Screen 02</span>
+            <h2>Project Enquiry / Lead Entry</h2>
+
+            <div class="form-section">
+                <h3>A. Project Source</h3>
+                <div class="form-grid">
+                    <div class="field">Project Title</div>
+                    <div class="field">Project Type: Internal / External / Research / Maintenance ▼</div>
+                    <div class="field">Received From: Faculty / Student / Alumni / Agency / Institution ▼</div>
+                    <div class="field">Name of Source / Referrer</div>
+                    <div class="field">Client / Department / Agency Name</div>
+                    <div class="field">Contact Person & Email</div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>B. Initial Requirement</h3>
+                <div class="field" style="min-height:90px;">Brief requirement / problem statement</div>
+                <div class="form-grid" style="margin-top:14px;">
+                    <div class="field">Expected Deliverables</div>
+                    <div class="field">Expected Timeline</div>
+                    <div class="field">Budget Indication, if any</div>
+                    <div class="field">Priority: Normal / Urgent ▼</div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>C. Attachments & Communication</h3>
+                <div class="form-grid">
+                    <div class="field">Upload Requirement Document</div>
+                    <div class="field">Link Email / ERP Communication Thread</div>
+                </div>
+            </div>
+
+            <div class="actions" style="margin-top:18px;">
+                <div class="btn">Save Enquiry</div>
+                <div class="btn primary">Send for Preliminary Review</div>
+                <div class="btn">Cancel</div>
+            </div>
+        </section>
+
+        <section class="screen" id="initiation">
+            <span class="screen-label">Screen 03</span>
+            <h2>Project Initiation & Proposal</h2>
+
+            <div class="project-header">
+                <div class="status-box">
+                    <strong>Project</strong>
+                    <div style="font-size:22px;font-weight:700;margin-top:8px;">Attendance Dashboard</div>
+                    <div class="note">Client: Department Office | Source: Institution</div>
+                </div>
+                <div class="status-box">
+                    <strong>Current Stage</strong>
+                    <div style="font-size:22px;font-weight:700;margin-top:8px;">Proposal Drafting</div>
+                    <div class="note">Last updated: 07 Jul 2026</div>
+                </div>
+                <div class="status-box">
+                    <strong>Decision</strong>
+                    <div class="actions" style="margin-top:10px;">
+                        <div class="btn soft">Accept</div>
+                        <div class="btn soft">Revise</div>
+                        <div class="btn soft">Defer</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3>A. Requirement Confirmation</h3>
+                <div class="form-grid">
+                    <div class="field">Scope Summary</div>
+                    <div class="field">Expected Deliverables</div>
+                    <div class="field">Timeline</div>
+                    <div class="field">Technical Stack Suggestion</div>
+                    <div class="field">Maintenance Need: Yes / No</div>
+                    <div class="field">Hosting Need: Yes / No</div>
+                </div>
+                <div class="field" style="margin-top:14px;min-height:70px;">Clarifications / Notes</div>
+            </div>
+
+            <div class="form-section">
+                <h3>B. Proposal Communication</h3>
+                <div class="form-grid">
+                    <div class="field">Proposal Number Auto-generated</div>
+                    <div class="field">Proposal Date</div>
+                    <div class="field">Prepared By</div>
+                    <div class="field">Sent through RLabZ Email / ERP</div>
+                </div>
+                <div class="actions" style="margin-top:14px;">
+                    <div class="btn">Preview Proposal</div>
+                    <div class="btn primary">Send Proposal</div>
+                    <div class="btn">Upload Signed Approval</div>
+                </div>
+            </div>
+
+            <div class="timeline">
+                <div class="step"><strong>1. Enquiry</strong>Received</div>
+                <div class="step"><strong>2. Discussion</strong>Initial requirements</div>
+                <div class="step"><strong>3. Proposal</strong>Prepared</div>
+                <div class="step"><strong>4. Approval</strong>Client/Director</div>
+                <div class="step"><strong>5. Allocation</strong>Faculty & students</div>
+                <div class="step"><strong>6. Start</strong>Development begins</div>
+            </div>
+        </section>
+
+        <section class="screen" id="costing">
+            <span class="screen-label">Screen 04</span>
+            <h2>Project Costing</h2>
+
+            <div class="form-section">
+                <h3>A. Costing Summary</h3>
+                <div class="form-grid.four">
+                    <div class="field">Project Value</div>
+                    <div class="field">Payment Model: Hourly / Project / Milestone ▼</div>
+                    <div class="field">RLabZ Share %</div>
+                    <div class="field">Contingency %</div>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cost Head</th>
+                        <th>Description</th>
+                        <th>Calculation</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Student Development Cost</td>
+                        <td>Based on assigned students/category/workload</td>
+                        <td>Configurable</td>
+                        <td>₹ ______</td>
+                    </tr>
+                    <tr>
+                        <td>Faculty Honorarium</td>
+                        <td>Project sourcing / coordination / guidance</td>
+                        <td>Configurable</td>
+                        <td>₹ ______</td>
+                    </tr>
+                    <tr>
+                        <td>RLabZ Share</td>
+                        <td>Institutional/divisional share</td>
+                        <td>Percentage</td>
+                        <td>₹ ______</td>
+                    </tr>
+                    <tr>
+                        <td>Hosting / Server / SSL / Domain</td>
+                        <td>Separately billed actuals</td>
+                        <td>Actual / Estimated</td>
+                        <td>₹ ______</td>
+                    </tr>
+                    <tr>
+                        <td>Maintenance</td>
+                        <td>Optional post-deployment support</td>
+                        <td>Fixed / Monthly</td>
+                        <td>₹ ______</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="actions" style="margin-top:18px;">
+                <div class="btn">Save Costing</div>
+                <div class="btn primary">Generate Estimate</div>
+                <div class="btn">Send for Approval</div>
+            </div>
+        </section>
+
+        <section class="screen" id="allocation">
+            <span class="screen-label">Screen 05</span>
+            <h2>Faculty & Student Allocation</h2>
+
+            <div class="two-col">
+                <div class="form-section">
+                    <h3>Faculty Assignment</h3>
+                    <div class="field">Project Coordinator ▼</div>
+                    <div class="field" style="margin-top:10px;">Technical Guide ▼</div>
+                    <div class="field" style="margin-top:10px;">Reviewer / QA Faculty ▼</div>
+                    <div class="field" style="margin-top:10px;">Project Brought By / Source Faculty</div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Student Requirement</h3>
+                    <div class="field">Required Roles: Lead Developer, Developer, Tester</div>
+                    <div class="field" style="margin-top:10px;">Required Skills: React, Node.js, MySQL</div>
+                    <div class="field" style="margin-top:10px;">Minimum Category: Orbit</div>
+                    <div class="field" style="margin-top:10px;">Expected Weekly Hours</div>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Recommended Student</th>
+                        <th>Category</th>
+                        <th>Matching Skills</th>
+                        <th>Availability</th>
+                        <th>Assigned Role</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Anu Thomas</td>
+                        <td>Nova</td>
+                        <td>React, Node, MySQL</td>
+                        <td>8 hrs/week</td>
+                        <td>Lead Developer</td>
+                        <td>Assign</td>
+                    </tr>
+                    <tr>
+                        <td>Rahul P</td>
+                        <td>Orbit</td>
+                        <td>React, UI</td>
+                        <td>6 hrs/week</td>
+                        <td>Developer</td>
+                        <td>Assign</td>
+                    </tr>
+                    <tr>
+                        <td>Meera S</td>
+                        <td>Spark</td>
+                        <td>Testing, Documentation</td>
+                        <td>5 hrs/week</td>
+                        <td>Testing Support</td>
+                        <td>Assign</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="actions" style="margin-top:18px;">
+                <div class="btn primary">Confirm Team Allocation</div>
+                <div class="btn">Notify Team</div>
+            </div>
+        </section>
+
+        <section class="screen" id="milestones">
+            <span class="screen-label">Screen 06</span>
+            <h2>Tasks & Milestones</h2>
+
+            <div class="actions">
+                <div class="btn primary">+ Add Milestone</div>
+                <div class="btn">+ Add Task</div>
+                <div class="btn">View Gantt</div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Milestone</th>
+                        <th>Tasks</th>
+                        <th>Assigned To</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Payment Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Requirement Finalization</td>
+                        <td>Scope freeze, approval note</td>
+                        <td>Faculty Coordinator</td>
+                        <td>12 Jul 2026</td>
+                        <td>Completed</td>
+                        <td>Milestone 1</td>
+                    </tr>
+                    <tr>
+                        <td>UI Prototype</td>
+                        <td>Dashboard, login, admin screens</td>
+                        <td>Anu, Rahul</td>
+                        <td>20 Jul 2026</td>
+                        <td>Ongoing</td>
+                        <td>Milestone 2</td>
+                    </tr>
+                    <tr>
+                        <td>Backend & Database</td>
+                        <td>API, DB schema, authentication</td>
+                        <td>Anu</td>
+                        <td>30 Jul 2026</td>
+                        <td>Pending</td>
+                        <td>Milestone 3</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="form-section">
+                <h3>Work Log</h3>
+                <div class="form-grid">
+                    <div class="field">Student / Faculty Name</div>
+                    <div class="field">Task Worked On</div>
+                    <div class="field">Date</div>
+                    <div class="field">Hours Spent</div>
+                </div>
+                <div class="field" style="margin-top:12px;min-height:70px;">Work description / remarks</div>
+            </div>
+        </section>
+
+        <section class="screen" id="github">
+            <span class="screen-label">Screen 07</span>
+            <h2>GitHub & Documentation</h2>
+
+            <div class="form-section">
+                <h3>A. Repository Details</h3>
+                <div class="form-grid">
+                    <div class="field">Official GitHub Repository Link</div>
+                    <div class="field">Repository Owner / Organization</div>
+                    <div class="field">Main Branch</div>
+                    <div class="field">Access Status: RLabZ Access Confirmed / Pending ▼</div>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Required Item</th>
+                        <th>Status</th>
+                        <th>Uploaded / Linked By</th>
+                        <th>Verified By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Complete Source Code</td>
+                        <td>Available</td>
+                        <td>Anu</td>
+                        <td>Dr. X</td>
+                    </tr>
+                    <tr>
+                        <td>README / Installation Steps</td>
+                        <td>Pending</td>
+                        <td>Rahul</td>
+                        <td>--</td>
+                    </tr>
+                    <tr>
+                        <td>Database Structure / Migration Files</td>
+                        <td>Available</td>
+                        <td>Anu</td>
+                        <td>Dr. X</td>
+                    </tr>
+                    <tr>
+                        <td>Deployment Instructions</td>
+                        <td>Pending</td>
+                        <td>Team</td>
+                        <td>--</td>
+                    </tr>
+                    <tr>
+                        <td>User Manual</td>
+                        <td>Pending</td>
+                        <td>Meera</td>
+                        <td>--</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="actions" style="margin-top:18px;">
+                <div class="btn">Upload Document</div>
+                <div class="btn primary">Mark Repository Verified</div>
+            </div>
+        </section>
+
+        <section class="screen" id="finance">
+            <span class="screen-label">Screen 08</span>
+            <h2>Finance Tracking</h2>
+
+            <div class="cards">
+                <div class="card"><div class="num">₹80K</div><div class="label">Project Value</div></div>
+                <div class="card"><div class="num">₹45K</div><div class="label">Revenue Received</div></div>
+                <div class="card"><div class="num">₹35K</div><div class="label">Pending</div></div>
+                <div class="card"><div class="num">₹18K</div><div class="label">Expenses Recorded</div></div>
+                <div class="card"><div class="num">₹12K</div><div class="label">Payable</div></div>
+            </div>
+
+            <div class="two-col">
+                <div class="form-section">
+                    <h3>Income Entry</h3>
+                    <div class="field">Amount Received</div>
+                    <div class="field" style="margin-top:10px;">Received From</div>
+                    <div class="field" style="margin-top:10px;">Payment Date</div>
+                    <div class="field" style="margin-top:10px;">Upload Payment Proof</div>
+                </div>
+                <div class="form-section">
+                    <h3>Expense Entry</h3>
+                    <div class="field">Expense Head: Student / Faculty / Server / SSL / Domain / Other ▼</div>
+                    <div class="field" style="margin-top:10px;">Amount Paid</div>
+                    <div class="field" style="margin-top:10px;">Paid To</div>
+                    <div class="field" style="margin-top:10px;">Upload Receipt / Proof</div>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Head</th>
+                        <th>Amount</th>
+                        <th>Proof</th>
+                        <th>Verified</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10 Jul 2026</td>
+                        <td>Income</td>
+                        <td>Advance Payment</td>
+                        <td>₹45,000</td>
+                        <td>Uploaded</td>
+                        <td>Yes</td>
+                    </tr>
+                    <tr>
+                        <td>15 Jul 2026</td>
+                        <td>Expense</td>
+                        <td>Student Payment</td>
+                        <td>₹8,000</td>
+                        <td>Uploaded</td>
+                        <td>Pending</td>
+                    </tr>
+                    <tr>
+                        <td>15 Jul 2026</td>
+                        <td>Expense</td>
+                        <td>Server Cost</td>
+                        <td>₹3,000</td>
+                        <td>Uploaded</td>
+                        <td>Yes</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="screen" id="closure">
+            <span class="screen-label">Screen 09</span>
+            <h2>Project Closure & Handover</h2>
+
+            <div class="project-header">
+                <div class="status-box">
+                    <strong>Project</strong>
+                    <div style="font-size:22px;font-weight:700;margin-top:8px;">Attendance Dashboard</div>
+                    <div class="note">Closure status: 7 / 11 completed</div>
+                </div>
+                <div class="status-box">
+                    <strong>Repository</strong>
+                    <div style="font-size:22px;font-weight:700;margin-top:8px;">Pending README</div>
+                    <div class="note">GitHub access confirmed</div>
+                </div>
+                <div class="status-box">
+                    <strong>Payment</strong>
+                    <div style="font-size:22px;font-weight:700;margin-top:8px;">Partly Pending</div>
+                    <div class="note">Final release after handover</div>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Closure Checklist</th>
+                        <th>Status</th>
+                        <th>Responsible</th>
+                        <th>Verified By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Project initial proposal available</td>
+                        <td>Completed</td>
+                        <td>Faculty Coordinator</td>
+                        <td>Director</td>
+                    </tr>
+                    <tr>
+                        <td>Project completed as per approved scope</td>
+                        <td>Completed</td>
+                        <td>Team</td>
+                        <td>Client / Faculty</td>
+                    </tr>
+                    <tr>
+                        <td>Code pushed to official GitHub repository</td>
+                        <td>Completed</td>
+                        <td>Lead Developer</td>
+                        <td>Technical Guide</td>
+                    </tr>
+                    <tr>
+                        <td>Documentation completed</td>
+                        <td>Pending</td>
+                        <td>Documentation Assistant</td>
+                        <td>Faculty</td>
+                    </tr>
+                    <tr>
+                        <td>Deployment details recorded</td>
+                        <td>Pending</td>
+                        <td>Technical Guide</td>
+                        <td>Director</td>
+                    </tr>
+                    <tr>
+                        <td>Student handover completed</td>
+                        <td>Pending</td>
+                        <td>All Students</td>
+                        <td>Faculty Coordinator</td>
+                    </tr>
+                    <tr>
+                        <td>Payment processing initiated</td>
+                        <td>Pending</td>
+                        <td>Finance/Admin</td>
+                        <td>Director</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="actions" style="margin-top:18px;">
+                <div class="btn">Download Closure Report</div>
+                <div class="btn primary">Mark Project Closed</div>
+                <div class="btn">Move to Maintenance</div>
+            </div>
+        </section>
+
+        <div class="footer-note">
+            RLabZ ERP Wireframe | Projects Module
+        </div>
+    </main>
+</div>
+</body>
+</html>
